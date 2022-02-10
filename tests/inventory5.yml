@@ -1,0 +1,4 @@
+all:
+  hosts:
+    mininuke:
+      ansible_connection: receptor

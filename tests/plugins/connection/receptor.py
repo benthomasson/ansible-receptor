@@ -85,7 +85,7 @@ class Connection(ConnectionBase):
         elif cmd.startswith("/bin/sh -c 'echo PLATFORM"):
             return (0, self.discover_platform(), "")
         elif "AnsiballZ" in cmd:
-            return (0, self.run_ansiballz(cmd), '')
+            return (0, self.run_ansiball(cmd), '')
         return (0, "", "")
 
     def get_home_directory(self):
@@ -104,14 +104,14 @@ class Connection(ConnectionBase):
         display.vvv("discover_platform")
         return b'PLATFORM\nLinux\nFOUND\n/home/ben/venv/ansible/bin/python3.9\n/usr/bin/python3.8\n/usr/bin/python3\n/usr/bin/python2.7\n/usr/bin/python\n/home/ben/venv/ansible/bin/python\nENDFOUND\n'
 
-    def run_ansiballz(self, cmd):
+    def run_ansiball(self, cmd):
         '''return stdout=hello because this connection plugin does nothing'''
-        display.vvv("run_ansiballz")
+        display.vvv("run_ansiball")
         display.vvv("connecting to receptor")
         rc = ReceptorControl('/tmp/foo.sock')
         display.vvv("submitting work")
         with open('/tmp/AnsiballZ.py') as f:
-            result = rc.submit_work('ansiballz', f.read(), node=self._play_context.remote_addr)
+            result = rc.submit_work('ansible-local', f.read(), node=self._play_context.remote_addr)
         display.vvv("waiting for results")
         resultsfile = rc.get_work_results(result['unitid'])
         return resultsfile.read()
@@ -121,7 +121,7 @@ class Connection(ConnectionBase):
 
         super(Connection, self).put_file(in_path, out_path)
         display.vvv(u"PUT {0} TO {1}".format(in_path, out_path), host=self._play_context.remote_addr)
-        # Save the ansiballz for inspection
+        # Save the ansiball for inspection
         shutil.copy(in_path, '/tmp/AnsiballZ.py')
 
     def fetch_file(self, in_path, out_path):
