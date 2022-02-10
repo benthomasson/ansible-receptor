@@ -1,0 +1,5 @@
+all:
+  hosts:
+    localhost0:
+      ansible_connection: ssh
+      ansible_ssh_host: localhost

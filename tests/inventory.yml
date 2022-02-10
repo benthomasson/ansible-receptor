@@ -1,0 +1,4 @@
+all:
+  hosts:
+    bar:
+      ansible_connection: receptor
